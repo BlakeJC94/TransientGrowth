@@ -1,8 +1,8 @@
-function [V, omega, J_mat] = TG_get_eig_matrix(N, f, tau, sigma_vec, mu_vec, frac_EV_TG, seed)
+function [V, omega, J] = TG_get_eig_matrix(N, f, tau, sigma_vec, mu_vec, seed)
 %TG_get_eig_matrix - Constructs the matrix operator J and returns eignevals/vecs
 %
-% Syntax: [V, omega, J_mat] = 
-%     TG_get_eig_matrix(N, f, tau, sigma_vec, mu_vec, frac_EV_TG, seed)
+% Syntax: [V, omega, J] = 
+%     TG_get_eig_matrix(N, f, tau, sigma_vec, mu_vec, seed)
 %
 % Transient growth in system given by 
 %     \frac{du_i}{dt} = -\frac{u_i}{tau} + \Sum_j W_{i,j} u_j %TODO: UPDATE THIS AND FOLLOWING CODE
@@ -16,11 +16,13 @@ function [V, omega, J_mat] = TG_get_eig_matrix(N, f, tau, sigma_vec, mu_vec, fra
 %   N = Total number of neurons
 %   tau = Decay rate of syste,
 %   f = Proportion of excitatory nodes 
-%   
 %   sigma_vec(1), signma_vec(2) = excitatory/inhibitory standard deviation
 %   mu_vec(1), mu_vec(2) = excitatory/inhibitory mean
 %   
-%   Ne, Ni = Number of excitatory and inhibitory neurons
+% Output:
+%   V = eigenvectors of J
+%   omega = eigenvalues of J
+%   J = operator for system
 
 
 
@@ -46,12 +48,12 @@ Wi = mui + (sigmai/sqrt(N))*randn(N, Ni);
 W = [We Wi];
 Tau = -eye(size(W))/tau;
 
-J_mat = W + Tau;
+J = W + Tau;
 
 
 
 %% obtain eigenvalues and eigenvectors of J
-[V,omega] = eig(J_mat);
+[V,omega] = eig(J);
 omega = diag(omega);
 
 

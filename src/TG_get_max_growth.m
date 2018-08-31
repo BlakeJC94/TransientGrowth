@@ -1,10 +1,32 @@
-function G_vec = TG_get_max_growth(t_vec, V, omega, frac_EV_TG)
-%TG_get_max_growth - Calculates maximum growth given time vector and 
-%   eigenvals/vecs from J and fraction of eigenvalues to keep
+function [G_vec, G_stats] = TG_get_max_growth(t_vec, V, omega, frac_EV_TG)
+%TG_get_max_growth - Calculates maximum growth and key stats given time vector 
+%   and eigenvals/vecs from J and fraction of eigenvalues to keep 
 %
 % Syntax: G_vec = TG_get_max_growth(t_vec, V, omega, frac_EV_TG)
 %
-% Long description
+% Transient growth in system given by 
+%     \frac{du_i}{dt} = -\frac{u_i}{tau} + \Sum_j W_{i,j} u_j %TODO: UPDATE THIS AND FOLLOWING CODE
+% such that W_{i,j} ~ N(\mu_e, \sigma_e^2/N) for j =< round(f*N) 
+%   and W_{i,j} ~ N(\mu_i, \sigma_i^2/N) for j > round(f*N) 
+% 
+% 1. Extract fraction of eigenstuff with leargest real part
+% 2. Construct F Lambda F_inv given eigenstuff from J
+% 3. Calculate operator norm of F Lambda F_inv
+% 
+% Input:
+%   t_vec = vector of values of t
+%   V = eigenvectors of J (from TG_get_eig_matrix)
+%   omega = eigenvalues of J (from TG_get_eig_matrix)
+%   frac_EV_TG = fraction of eigenvalues to use
+% 
+% Output: 
+%   G_vec = vector of values of G for intput t
+%   G_stats = struct containing key stats for G
+%     G_max = maximum amplification, (local max found using max)
+%     t_opt = time at which max occurs
+%     G_init_slope = slope of G at t=min(t)^+ (found using 1st order diff)
+% 
+% 
 
 
 
@@ -61,6 +83,22 @@ for index = 1:length(t_vec)
     % Matrix 2-norm equivilent to largest singular value
     G_vec(index) = norm(F_a*Lambda*F_a_inv)^2;
 end
+
+
+
+%% Calculate key statistics of G_vec
+[G_max, G_max_ind] = max(G_vec); 
+t_opt = t_vec(G_max_ind);
+G_init_slope = (G_vec(2) - G_vec(1))/(t_vec(2) - t_vec(1));
+% check if peak is truly a local max
+if abs(G_max_ind - length(G_vec)) < 10
+    warning('Peak occurs in last 10 steps, increase t_max')
+end
+% export stats
+G_stats.G_max = G_max;
+G_stats.t_opt = t_opt;
+G_stats.G_init_slope = G_init_slope;
+
 
 
 
