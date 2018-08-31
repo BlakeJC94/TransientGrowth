@@ -1,7 +1,8 @@
 function [V, omega, J_mat] = TG_get_eig_matrix(N, f, tau, sigma_vec, mu_vec, frac_EV_TG, seed)
 %TG_get_eig_matrix - Constructs the matrix operator J and returns eignevals/vecs
 %
-% Syntax: [V, omega] = TG_get_eig_matrix(N, f, tau, sigma_vec, mu_vec, frac_EV_TG, seed)
+% Syntax: [V, omega, J_mat] = 
+%     TG_get_eig_matrix(N, f, tau, sigma_vec, mu_vec, frac_EV_TG, seed)
 %
 % Transient growth in system given by 
 %     \frac{du_i}{dt} = -\frac{u_i}{tau} + \Sum_j W_{i,j} u_j %TODO: UPDATE THIS AND FOLLOWING CODE
