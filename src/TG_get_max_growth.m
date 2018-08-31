@@ -9,10 +9,11 @@ function G_vec = TG_get_max_growth(t_vec, V, omega, frac_EV_TG)
 
 
 %% Eliminate spurious/smaller eigenvalues
+N = length(omega);
 n_EG = floor(N*frac_EV_TG);
 % store indices of the n_EG eigenvalues with largest real part
 % (most likely to casue instabilities)
-[~, ii_omega_TG] = sort(real(omega), 'decend');
+[~, ii_omega_TG] = sort(real(omega), 'descend');
 ii_omega_TG = ii_omega_TG(1:n_EG);
 % get corresponding eigenvectors 
 M = length(ii_omega_TG);
@@ -43,18 +44,20 @@ A = A_u + tril(A_u,-1)';
 
 
 %% Construct F such that A = F'* F 
-% TODO: compare results and performance with chol()
-% (is A positive definite?? if so, this is unique and more efficient w chol)
-[V_a, lam_a] = eig(A);
-F_a = V_a*sqrt(lam_a)*V_a';
-F_a_inv =  V_a * diag(1./diag(sqrt(lam_a))) * V_a';
+% ORIGINAL METHOD
+% [V_a, lam_a] = eig(A);
+% F_a = V_a*sqrt(lam_a)*V_a';
+% F_a_inv =  V_a * diag(1./diag(sqrt(lam_a))) * V_a';
+% NEW METHOD, slightly faster
+F_a = chol(A);
+F_a_inv = F_a\eye(size(F_a));
 
 
 
 %% Construct Lambda and G_vec
 G_vec = zeros(length(t_vec),1);
 for index = 1:length(t_vec)
-    Lambda = diag(exp(omega(ii_omega_TG)*t_vec(ii)));
+    Lambda = diag(exp(omega(ii_omega_TG)*t_vec(index)));
     % Matrix 2-norm equivilent to largest singular value
     G_vec(index) = norm(F_a*Lambda*F_a_inv)^2;
 end

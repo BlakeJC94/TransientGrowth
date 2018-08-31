@@ -8,14 +8,14 @@
 clear; %clc;
 close all;
 addpath(genpath('../src'))
-plot_eigvals = 1;
+plot_eigvals = 0;
 plot_G_vec = 1;
 % rng('shuffle');  % randomises results
 %=========================================================================
 % Variable declaration
-N = 400;  % Total number of neurons
+N = 1000;  % Total number of neurons
 f = 0.5;  % Proportion of excitatory nodes 
-tau = 1/100;  % Decay rate of system
+tau = 1/4;  % Decay rate of system
 
 sigmaev = 5;  % excitatory standard deviation
 sigmaiv = 1;  % inhibitory standard deviation
@@ -30,15 +30,16 @@ t_max = 10;
 t_step = 0.1;
 
 %seed = 'shuffle';
-seed = 10*1000;
-keyboard;
+seed = 0;
+
 %=========================================================================
 
 sigma_vec = [sigmaev, sigmaiv];
 mu_vec = [mue, mui];
 
 
-[A_mat, omega] = TG_get_eig_matrix(N, f, tau, sigma_vec, mu_vec, frac_EV_TG, seed);
+[V, omega, J_mat] = ...
+    TG_get_eig_matrix(N, f, tau, sigma_vec, mu_vec, frac_EV_TG, seed);
 
 
 if plot_eigvals == 1
@@ -83,7 +84,7 @@ end
 
 
 t_vec = t_min:t_step:t_max;
-G_vec = TG_get_max_growth(t_vec, A_mat, omega, frac_EV_TG);
+G_vec = TG_get_max_growth(t_vec, V, omega, frac_EV_TG);
 
 
 [G_max, G_max_ind] = max(G_vec);
