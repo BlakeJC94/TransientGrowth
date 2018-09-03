@@ -3,11 +3,11 @@
 % modified by Blake (Aug 2018)
 %=========================================================================
 % Transient growth in system given by 
-%   \frac{du_i}{dt} = -\frac{u_i}{tau} + \Sum_j W_{ij} \phi(x_j)
+%   \frac{du_i}{dt} = -\frac{u_i}{tau} + \Sum_j W_{ij} \phi(u_j)
 %=========================================================================
 clear; %clc;
 close all;
-addpath(genpath('../src'))
+addpath(genpath('src'))
 plot_eigvals = 1;
 plot_G_vec = 1;
 % rng('shuffle');  % randomises results

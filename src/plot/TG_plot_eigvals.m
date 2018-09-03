@@ -39,8 +39,8 @@ figopt.titlestr = ['$N$=' num2str(N) ',~$f$=' num2str(f) ...
 
 figopt.xmin = -2*sigmaeff - 1/tau + 1;
 figopt.xmax = 1;
-figopt.ymin = -2*sigmaeff + 1/(2*tau);
-figopt.ymax =  2*sigmaeff - 1/(2*tau);
+figopt.ymin = -1*sigmaeff - 1/(2*tau);
+figopt.ymax =  1*sigmaeff + 1/(2*tau);
 figopt.fitfactor = 1.3;
 
 
