@@ -37,10 +37,10 @@ figopt.ylabelstr = '$\omega_i$';
 figopt.titlestr = ['$N$=' num2str(N) ',~$f$=' num2str(f) ... 
     '$,~\sigma_{e}$=' num2str(sigmae),'$,~\sigma_{i}$=',num2str(sigmai)];
 
-figopt.xmin = -2*sigmaeff+1 - 1/tau;
+figopt.xmin = -2*sigmaeff - 1/tau + 1;
 figopt.xmax = 1;
-figopt.ymin = -2*sigmaeff+1;
-figopt.ymax = 2*sigmaeff+1;
+figopt.ymin = -2*sigmaeff + 1/(2*tau);
+figopt.ymax =  2*sigmaeff - 1/(2*tau);
 figopt.fitfactor = 1.3;
 
 
