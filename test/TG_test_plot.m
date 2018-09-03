@@ -26,14 +26,15 @@ fig_dir = 'output/test/TG_test_plot/';
 
 %% Test TG_plot_eigvals(N, f, tau, sigma_vec, mu_vec, omega)
 TG_plot_eigvals(N, f, tau, sigma_vec, mu_vec, omega);
-SaveAsPngEpsAndFig(-1, [fig_dir 'TG_plot_eigvals_results'], 14, 7/5, 18);
+plot_export_fig(-1, [fig_dir 'TG_plot_eigvals_results'], 14, 7/5, 18);
 
 %% Test TG_plot_max_growth(G_vec, t_vec, G_stats)
 TG_plot_max_growth(G_vec, t_vec, G_stats)
-SaveAsPngEpsAndFig(-1, [fig_dir 'TG_plot_max_growth_results'], 14, 7/5, 18);
+plot_export_fig(-1, [fig_dir 'TG_plot_max_growth_results'], 14, 7/5, 18);
 
 %% Test complete
 disp('TG_test_plot : Pass!')
+disp('  Check output in ''output/test/TG_test_plot'' to verify')
 
 end
 
