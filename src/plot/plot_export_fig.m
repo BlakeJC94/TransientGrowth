@@ -28,9 +28,9 @@ function plot_export_fig(h,filename,pdfwidth,widthheightratio,pdflabelsize)
 % 
 
 
-% line width in ? (between 1 and 3)
+% line width in pt (between 1 and 3, MATLAB default is 0.5)
 linewidth = 0.8;  
-% % size of markers in pt (1-20)
+% % size of markers in pt (1-20, MATLAB default is 6)
 % markersize = 6; 
 % ratio between label font size and axis label font size (between 0 and 1)
 labeloveraxislabelratio = 0.8;  
