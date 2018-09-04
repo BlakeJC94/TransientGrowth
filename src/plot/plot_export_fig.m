@@ -23,7 +23,7 @@ function plot_export_fig(h,filename,pdfwidth,widthheightratio,pdflabelsize)
 %      modified to "centimeters"
 %  - WARNING: Not tested for 3D plots. It might work though.
 %  - Default values for A4 LaTeX document: 
-%      SaveAsPngEpsAndFig(-1, [name], 14, 7/5, 18);
+%      plot_export_fig(-1, [name], 14, 7/5, 18);
 % 
 % 
 
