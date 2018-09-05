@@ -1,4 +1,4 @@
-function [G_vec, G_stats] = TG_get_max_growth(t_vec, V, omega, frac_EV_TG)
+function [G_vec, G_stats] = TG_get_max_growth(Params, V, omega)
 %TG_get_max_growth - Calculates maximum growth and key stats given time vector 
 %   and eigenvals/vecs from J and fraction of eigenvalues to keep 
 %
@@ -28,7 +28,8 @@ function [G_vec, G_stats] = TG_get_max_growth(t_vec, V, omega, frac_EV_TG)
 % 
 % 
 
-
+frac_EV_TG = Params.frac_EV_TG;
+t_vec = Params.t_min:Params.t_step:Params.t_max;
 
 %% Eliminate spurious/smaller eigenvalues
 N = length(omega);

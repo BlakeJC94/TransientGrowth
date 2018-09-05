@@ -1,4 +1,4 @@
-function [V, omega, J] = TG_get_eig_matrix(N, f, tau, sigma_vec, mu_vec, seed)
+function [V, omega, J] = TG_get_eig_matrix(Params)
 %TG_get_eig_matrix - Constructs the matrix operator J and returns eignevals/vecs
 %
 % Syntax: [V, omega, J] = 
@@ -26,16 +26,22 @@ function [V, omega, J] = TG_get_eig_matrix(N, f, tau, sigma_vec, mu_vec, seed)
 
 
 
-%% Load parameters 
+%% Load parameters
+N = Params.N;  % Total number of neurons
+f = Params.f;  % Proportion of excitatory nodes 
+tau = Params.tau;  % Decay rate of system
+
+sigmae = Params.sigmae;  % excitatory standard deviation
+sigmai = Params.sigmai;  % inhibitory standard deviation
+
+mue = Params.mue;  % excitatory mean
+mui = Params.mui;  % inhibitory mean
+
+seed = Params.seed;
+
+
 rng(seed) % put seed = 'shuffle' if random results are desired
-
-sigmae = sigma_vec(1);  % excitatory standard deviation
-sigmai = sigma_vec(2);  % inhibitory standard deviation
-
-mue = mu_vec(1);  % excitatory mean
-mui = mu_vec(2);  % inhibitory mean
-
-Ne = round(f*N); Ni = N - Ne; % Number of excitatory and inhibitory neurons
+Ne = round(f*Params.N); Ni = N - Ne; % Number of excitatory and inhibitory neurons
 
 
 

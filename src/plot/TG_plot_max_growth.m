@@ -1,4 +1,4 @@
-function TG_plot_max_growth(G_vec, t_vec, G_stats)
+function TG_plot_max_growth(Params, G_vec, G_stats)
 %TG_plot_max_growth - Plots max growth G against t
 %
 % Syntax: output = TG_plot_max_growth(input)
@@ -6,11 +6,13 @@ function TG_plot_max_growth(G_vec, t_vec, G_stats)
 % Simple function for plotting the max growth as 
 %   calculated from TG_get_max_growth
 
-%% Unpack G_stats
+
+%% Unpack G_stats and Params
 t_opt = G_stats.t_opt;
 G_max = G_stats.G_max;
 G_init_slope = G_stats.G_init_slope;
 
+t_vec = Params.t_min:Params.t_step:Params.t_max;
 
 %% Plot options 
 fig2opt.xlabelstr = '$t$';

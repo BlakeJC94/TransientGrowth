@@ -1,4 +1,4 @@
-function TG_plot_eigvals(N, f, tau, sigma_vec, mu_vec, omega)
+function TG_plot_eigvals(Params, omega)
 %TG_plot_eigvals - Plots eigenvalues and radius of density in argand plane
 %
 % Syntax: TG_plot_eigvals(N, f, tau, sigma_vec, mu_vec)
@@ -17,11 +17,15 @@ function TG_plot_eigvals(N, f, tau, sigma_vec, mu_vec, omega)
 
 
 %% Load parameters
-sigmae = sigma_vec(1);  % excitatory standard deviation
-sigmai = sigma_vec(2);  % inhibitory standard deviation
+N = Params.N;  % Total number of neurons
+f = Params.f;  % Proportion of excitatory nodes 
+tau = Params.tau;  % Decay rate of system
 
-mue = mu_vec(1);  % excitatory mean
-mui = mu_vec(2);  % inhibitory mean
+sigmae = Params.sigmae;  % excitatory standard deviation
+sigmai = Params.sigmai;  % inhibitory standard deviation
+
+% mue = Params.mue;  % excitatory mean
+% mui = Params.mui;  % inhibitory mean
 
 
 

@@ -44,21 +44,23 @@ if (total_runs > 0) && (isempty(var_str))
 end
 
 %% load default parameters
-N = 100;  % Total number of neurons
-f = 0.5;  % Proportion of excitatory nodes 
-tau = 1/4;  % Decay rate of system
+Params.N = 100;  % Total number of neurons
+Params.f = 0.5;  % Proportion of excitatory nodes 
+Params.tau = 1/4;  % Decay rate of system
 
-sigmae = 5;  % excitatory standard deviation
-sigmai = 1;  % inhibitory standard deviation
+Params.sigmae = 5;  % excitatory standard deviation
+Params.sigmai = 1;  % inhibitory standard deviation
 
-mue = 0;  % excitatory mean
-mui = -mue;  % inhibitory mean
+Params.mue = 0;  % excitatory mean
+Params.mui = -Params.mue;  % inhibitory mean
 
-frac_EV_TG = 0.5;  % fraction of eigenvalues used for TG
+Params.frac_EV_TG = 0.5;  % fraction of eigenvalues used for TG
 
-t_min = 0;
-t_max = 10;
-t_step = 0.1;
+Params.t_min = 0;
+Params.t_max = 10;
+Params.t_step = 0.1;
+
+Params.seed = 0;
 
 %% Run solver for default values if no input is given
 %% Modify single value, run solver and plot 
@@ -72,15 +74,10 @@ if (total_runs == 0)
     if ~isempty(var_str)
         disp('Parameters modified')
         for i = 1:length(var_str)
-            eval([var_str{i} ' = ' num2str(var_vec(i)) ';']);
+            eval(['Params.' var_str{i} ' = ' num2str(var_vec(i)) ';']);
         end
     end
-
-    % set input for solver
-    seed = 0;
-    sigma_vec = [sigmae, sigmai];
-    mu_vec = [mue, mui];
-    t_vec = t_min:t_step:t_max;
+    
 
     % Save input to file
     file = [out_dir 'results.txt'];
@@ -96,17 +93,16 @@ if (total_runs == 0)
     fprintf(fileID, '---------------------------\n');
     for i = 1:length(var_names)
         name = var_names{i};
-        eval(['val = ' name ';']);
+        eval(['val = Params.' name ';']);
         fprintf(fileID, '  %-12s = %g\n',name,val);
     end
     fprintf(fileID, '---------------------------\n\n');
 
     % Get eigenvalues of J
-    [V, omega, J_mat] = ...
-        TG_get_eig_matrix(N, f, tau, sigma_vec, mu_vec, seed);
+    [V, omega, J_mat] = TG_get_eig_matrix(Params);
 
     % Get max growth
-    [G_vec, G_stats] = TG_get_max_growth(t_vec, V, omega, frac_EV_TG);
+    [G_vec, G_stats] = TG_get_max_growth(Params, V, omega);
 
     % Write G stats to file
     fprintf(fileID, 'Results : \n');
@@ -116,11 +112,11 @@ if (total_runs == 0)
     fprintf(fileID,'  %-12s = %g\n','G_init_slope', G_stats.G_init_slope);
     
     % Plot eigenvalues
-    TG_plot_eigvals(N, f, tau, sigma_vec, mu_vec, omega);
+    TG_plot_eigvals(Params, omega);
     plot_export_fig(-1, [out_dir 'figures/plot_eigvals'], 14, 7/5, 18);
 
     % Plot max growth
-    TG_plot_max_growth(G_vec, t_vec, G_stats)
+    TG_plot_max_growth(Params, G_vec, G_stats);
     plot_export_fig(-1, [out_dir 'figures/plot_max_growth'], 14, 7/5, 18);
 
     % Save data to dir
@@ -156,7 +152,7 @@ else
     fprintf(fileID, '---------------------------\n');
     for i = 1:length(var_names)
         name = var_names{i};
-        eval(['val = ' name ';']);
+        eval(['val = Params.' name ';']);
         fprintf(fileID, '  %-12s = %g\n',name,val);
     end
     fprintf(fileID, '---------------------------\n\n');
@@ -178,25 +174,19 @@ else
     for i = 1:length(var_vec)
 
         % Load input sweep parameter
-        eval([var_str ' = ' num2str(var_vec(i)) ';']);
+        eval(['Params.' var_str ' = ' num2str(var_vec(i)) ';']);
         disp([var_str ' = ' num2str(var_vec(i))]); 
-
-        % Set up parameters
-        sigma_vec = [sigmae, sigmai];
-        mu_vec = [mue, mui];
-        t_vec = t_min:t_step:t_max;
 
         % loop over runs
         for j = 1:total_runs
 
             disp(['  run = ' num2str(j)])
-            seed = 100 * j;
+            Params.seed = 100 * j;
             
             % run solver
-            [V, omega, ~] = ...
-                TG_get_eig_matrix(N, f, tau, sigma_vec, mu_vec, seed);
+            [V, omega, ~] = TG_get_eig_matrix(Params);
 
-            [~, G_stats] = TG_get_max_growth(t_vec, V, omega, frac_EV_TG);
+            [~, G_stats] = TG_get_max_growth(Params, V, omega);
 
             % Write G stats to file
             fprintf(fileID, 'Results (%s = %g, %g): \n', var_str, var_vec(i), j);
@@ -216,7 +206,7 @@ else
         end
     end
 
-    % TODO: plots??
+    % Plot results 
     G_max_avg = mean(sweep_results(:,:,1), 2);
     G_max_std = std(sweep_results(:,:,1), 0, 2);
 

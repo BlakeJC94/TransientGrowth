@@ -1,9 +1,9 @@
-09/05/2018 14:21:42
+09/05/2018 17:13:28
 1 run, default values, plots on
 
 Parameter values loaded : 
 ---------------------------
-  N            = 100
+  N            = 250
   f            = 0.5
   tau          = 0.25
   sigmae       = 5
@@ -19,6 +19,6 @@ Parameter values loaded :
 
 Results : 
 ---------------------------
-  G_max        = 2.03458
-  t_opt        = 0.8
-  G_init_slope = 1.88503
+  G_max        = 2.29043
+  t_opt        = 0.9
+  G_init_slope = 2.2885
