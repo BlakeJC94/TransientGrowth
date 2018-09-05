@@ -39,6 +39,10 @@ if nargin == 1
     var_vec = [];
 end
 
+if ischar(var_str)
+    var_str = {var_str};
+end
+
 if (total_runs > 0) && (isempty(var_str))
     error('Sweep requested but no paramter given!')
 end
@@ -72,31 +76,20 @@ if (total_runs == 0)
     
     % Load changed parameters if given
     if ~isempty(var_str)
+
+        % Throw error if multiple values given for var_str
+        if length(var_str) ~= length(var_vec)
+            error('Parameter name value mismatch in demo mode!')
+        end
+
         disp('Parameters modified')
         for i = 1:length(var_str)
             eval(['Params.' var_str{i} ' = ' num2str(var_vec(i)) ';']);
         end
     end
     
-
     % Save input to file
-    file = [out_dir 'results.txt'];
-    fileID = fopen(file, 'w');
-    
-
-    var_names = {'N', 'f', 'tau', 'sigmae', 'sigmai', 'mue', 'mui', ...
-        'frac_EV_TG', 't_min', 't_max', 't_step', 'seed'};
-
-    fprintf(fileID, datestr(now,'mm/dd/yyyy HH:MM:SS\n'));
-    fprintf(fileID, '1 run, default values, plots on\n\n');
-    fprintf(fileID, 'Parameter values loaded : \n');
-    fprintf(fileID, '---------------------------\n');
-    for i = 1:length(var_names)
-        name = var_names{i};
-        eval(['val = Params.' name ';']);
-        fprintf(fileID, '  %-12s = %g\n',name,val);
-    end
-    fprintf(fileID, '---------------------------\n\n');
+    TG_write_input(Params, out_dir);
 
     % Get eigenvalues of J
     [V, omega, J_mat] = TG_get_eig_matrix(Params);
@@ -105,11 +98,7 @@ if (total_runs == 0)
     [G_vec, G_stats] = TG_get_max_growth(Params, V, omega);
 
     % Write G stats to file
-    fprintf(fileID, 'Results : \n');
-    fprintf(fileID, '---------------------------\n');
-    fprintf(fileID,'  %-12s = %g\n','G_max', G_stats.G_max);
-    fprintf(fileID,'  %-12s = %g\n','t_opt', G_stats.t_opt);
-    fprintf(fileID,'  %-12s = %g\n','G_init_slope', G_stats.G_init_slope);
+    TG_write_output(G_stats, out_dir);
     
     % Plot eigenvalues
     TG_plot_eigvals(Params, omega);
@@ -138,33 +127,7 @@ else
     out_dir = 'output/TG_main/1dsweep/';
     
     % Save input to file
-    file = [out_dir 'results.txt'];
-    fileID = fopen(file, 'w');
-
-    var_names = {'N', 'f', 'tau', 'sigmae', 'sigmai', 'mue', 'mui', ...
-        'frac_EV_TG', 't_min', 't_max', 't_step'};
-
-    fprintf(fileID, datestr(now,'mm/dd/yyyy HH:MM:SS\n'));
-
-    fprintf(fileID,'%g runs, sweep over %s, plots off\n\n',total_runs,var_str);
-
-    fprintf(fileID, 'Default parameter values loaded : \n');
-    fprintf(fileID, '---------------------------\n');
-    for i = 1:length(var_names)
-        name = var_names{i};
-        eval(['val = Params.' name ';']);
-        fprintf(fileID, '  %-12s = %g\n',name,val);
-    end
-    fprintf(fileID, '---------------------------\n\n');
-
-    fprintf(fileID, 'Sweep parameter values loaded : \n');
-    fprintf(fileID, '---------------------------\n');
-    fprintf(fileID, '    %s \n', var_str);
-    for i = 1:length(var_vec)
-        fprintf(fileID, '    %g \n', var_vec(i));
-    end
-    fprintf(fileID, '---------------------------\n\n');
-
+    TG_write_input(Params, out_dir);
 
     % Preallocate data array
     sweep_results = zeros(length(var_vec), total_runs, 3);
@@ -185,16 +148,10 @@ else
             
             % run solver
             [V, omega, ~] = TG_get_eig_matrix(Params);
-
             [~, G_stats] = TG_get_max_growth(Params, V, omega);
 
             % Write G stats to file
-            fprintf(fileID, 'Results (%s = %g, %g): \n', var_str, var_vec(i), j);
-            fprintf(fileID, '---------------------------\n');
-            fprintf(fileID,'  %-12s = %g\n','G_max', G_stats.G_max);
-            fprintf(fileID,'  %-12s = %g\n','t_opt', G_stats.t_opt);
-            fprintf(fileID,'  %-12s = %g\n','G_init_slope', G_stats.G_init_slope);
-            fprintf(fileID, '---------------------------\n\n');
+            TG_write_output(G_stats, out_dir, var_str, var_vec(i), j);
             
             % extract data
             sweep_results(i, j, 1) = G_stats.G_max;
