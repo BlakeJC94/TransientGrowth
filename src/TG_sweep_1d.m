@@ -1,4 +1,4 @@
-function sweep_results = TG_sweep_1d(var_str, var_vec, total_runs)
+function sweep_results = TG_sweep_1d(total_runs, var_str, var_vec)
 %TG_sweep_1d - Preforms 1d sweep over a given variable
 %
 % Syntax: sweep_results = myFun(input)
