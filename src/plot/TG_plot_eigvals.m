@@ -1,4 +1,4 @@
-function TG_plot_eigvals(Params, omega)
+function TG_plot_eigvals(Params, omega, out_dir)
 %TG_plot_eigvals - Plots eigenvalues and radius of density in argand plane
 %
 % Syntax: TG_plot_eigvals(N, f, tau, sigma_vec, mu_vec)
@@ -68,6 +68,8 @@ title(figopt.titlestr,'interpreter','latex');
 
 axis([figopt.xmin figopt.xmax figopt.ymin figopt.ymax]*figopt.fitfactor)
 axis square
+
+plot_export_fig(-1, [out_dir 'figures/plot_eigvals'], 14, 7/5, 18);
 
 
 

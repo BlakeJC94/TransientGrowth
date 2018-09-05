@@ -1,4 +1,4 @@
-function TG_plot_max_growth(Params, G_vec, G_stats)
+function TG_plot_max_growth(Params, G_vec, G_stats, out_dir)
 %TG_plot_max_growth - Plots max growth G against t
 %
 % Syntax: output = TG_plot_max_growth(input)
@@ -39,6 +39,9 @@ text(t_opt+0.1, 0.1, t_opt_str, 'Interpreter', 'latex');
 text(t_opt+0.1, G_max+0.1, G_max_str, 'Interpreter', 'latex');
 text(t_vec(1)+0.1, G_vec(1), G_init_slope_str, 'Interpreter', 'latex');
 hold off;
+
+% export
+plot_export_fig(-1, [out_dir 'figures/plot_eigvals'], 14, 7/5, 18);
 
 
 

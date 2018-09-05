@@ -25,12 +25,10 @@ load('test/data/TG_test_plot/results.mat')
 fig_dir = 'output/test/TG_test_plot/';
 
 %% Test TG_plot_eigvals(N, f, tau, sigma_vec, mu_vec, omega)
-TG_plot_eigvals(Params, omega);
-plot_export_fig(-1, [fig_dir 'TG_plot_eigvals_results'], 14, 7/5, 18);
+TG_plot_eigvals(Params, omega, fig_dir);
 
 %% Test TG_plot_max_growth(G_vec, t_vec, G_stats)
-TG_plot_max_growth(Params, G_vec, G_stats)
-plot_export_fig(-1, [fig_dir 'TG_plot_max_growth_results'], 14, 7/5, 18);
+TG_plot_max_growth(Params, G_vec, G_stats, fig_dir)
 
 %% Test complete
 disp('TG_test_plot : Pass!')

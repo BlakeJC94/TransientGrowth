@@ -47,24 +47,11 @@ if (total_runs > 0) && (isempty(var_str))
     error('Sweep requested but no paramter given!')
 end
 
+
+
 %% load default parameters
-Params.N = 100;  % Total number of neurons
-Params.f = 0.5;  % Proportion of excitatory nodes 
-Params.tau = 1/4;  % Decay rate of system
-
-Params.sigmae = 5;  % excitatory standard deviation
-Params.sigmai = 1;  % inhibitory standard deviation
-
-Params.mue = 0;  % excitatory mean
-Params.mui = -Params.mue;  % inhibitory mean
-
-Params.frac_EV_TG = 0.5;  % fraction of eigenvalues used for TG
-
-Params.t_min = 0;
-Params.t_max = 10;
-Params.t_step = 0.1;
-
-Params.seed = 0;
+Params = TG_main_parameters;
+display(Params);
 
 %% Run solver for default values if no input is given
 %% Modify single value, run solver and plot 
@@ -92,28 +79,28 @@ if (total_runs == 0)
     TG_write_input(Params, out_dir);
 
     % Get eigenvalues of J
-    [V, omega, J_mat] = TG_get_eig_matrix(Params);
+    [V, omega, J_mat] = TG_get_eig_matrix(Params);  %#ok<ASGLU>
 
     % Get max growth
     [G_vec, G_stats] = TG_get_max_growth(Params, V, omega);
 
-    % Write G stats to file
+    % Write G_stats to file
     TG_write_output(G_stats, out_dir);
     
     % Plot eigenvalues
-    TG_plot_eigvals(Params, omega);
-    plot_export_fig(-1, [out_dir 'figures/plot_eigvals'], 14, 7/5, 18);
+    TG_plot_eigvals(Params, omega, out_dir);
 
     % Plot max growth
-    TG_plot_max_growth(Params, G_vec, G_stats);
-    plot_export_fig(-1, [out_dir 'figures/plot_max_growth'], 14, 7/5, 18);
+    TG_plot_max_growth(Params, G_vec, G_stats, out_dir);
 
     % Save data to dir
     save([out_dir 'results.mat']);
 
 
+
 else 
-    disp('Sweep ')
+
+    disp('Sweep mode')
 
     % Check input for 1d sweep
     if length(var_str) > 1
@@ -134,6 +121,7 @@ else
 
     %% Run solvers
     % loop over sweep values
+    disp('=== Begin solving ===')
     for i = 1:length(var_vec)
 
         % Load input sweep parameter
@@ -162,41 +150,13 @@ else
 
         end
     end
-
-    % Plot results 
-    G_max_avg = mean(sweep_results(:,:,1), 2);
-    G_max_std = std(sweep_results(:,:,1), 0, 2);
-
-    t_opt_avg = mean(sweep_results(:,:,2), 2);
-    t_opt_std = std(sweep_results(:,:,2), 0, 2);
-    
-    G_init_slope_avg = mean(sweep_results(:,:,3), 2);
-    G_init_slope_std = std(sweep_results(:,:,3), 0, 2);
-
-    figure;
-    errorbar(var_vec,G_max_avg,G_max_std,'ko-'); 
-    xlim([min(var_vec)-0.1*range(var_vec), max(var_vec)+0.1*range(var_vec)]);
-    xlabel(var_str);
-    title(['G\_max average over ' num2str(total_runs) ' runs']);
-    plot_export_fig(-1, [out_dir 'figures/g_max_avg'], 14, 7/5, 18);
-    
-    figure;
-    errorbar(var_vec,t_opt_avg,t_opt_std,'ko-');
-    xlim([min(var_vec)-0.1*range(var_vec), max(var_vec)+0.1*range(var_vec)]);
-    xlabel(var_str);
-    title(['t\_opt average over ' num2str(total_runs) ' runs']);
-    plot_export_fig(-1, [out_dir 'figures/t_opt_avg'], 14, 7/5, 18);
-
-    figure;
-    errorbar(var_vec,G_init_slope_avg,G_init_slope_std,'ko-');        
-    xlim([min(var_vec)-0.1*range(var_vec), max(var_vec)+0.1*range(var_vec)]);
-    xlabel(var_str);
-    title(['G\_init\_slope average over ' num2str(total_runs) ' runs']);
-    plot_export_fig(-1, [out_dir 'figures/G_init_slope_avg'], 14, 7/5, 18);
-
+    disp('=== End solving ===')
 
     % Save data to dir
     save([out_dir 'results.mat']);
+
+    % Plot results 
+    TG_plot_1d_sweep(sweep_results, var_str, var_vec, out_dir)
 
 end
 
