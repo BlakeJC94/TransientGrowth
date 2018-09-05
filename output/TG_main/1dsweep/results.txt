@@ -1,4 +1,4 @@
-09/05/2018 11:39:21
+09/05/2018 14:56:35
 5 runs, sweep over N, plots off
 
 Default parameter values loaded : 
