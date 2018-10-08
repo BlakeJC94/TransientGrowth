@@ -30,7 +30,7 @@ sigmai = Params.sigmai;  % inhibitory standard deviation
 
 
 %% Calulate circle radius and plot vecs
-sigmaeff = sqrt(f*sigmae^2 + (1-f)*sigmai^2);
+sigmaeff = sqrt(N*(f*sigmae^2 + (1-f)*sigmai^2));
 theta = linspace(0,2*pi,360);
 
 

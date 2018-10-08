@@ -29,7 +29,7 @@ function [G_vec, G_stats] = TG_get_max_growth(Params, V, omega)
 % 
 
 frac_EV_TG = Params.frac_EV_TG;
-t_vec = Params.t_min:Params.t_step:Params.t_max;
+t_vec = linspace(Params.t_min, Params.t_max, Params.t_step);
 
 %% Eliminate spurious/smaller eigenvalues
 N = length(omega);

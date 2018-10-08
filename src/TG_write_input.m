@@ -18,7 +18,11 @@ fprintf(fileID, '---------------------------\n');
 for i = 1:length(var_names)
     name = var_names{i};
     eval(['val = Params.' name ';']);
-    fprintf(fileID, '  %-12s = %g\n',name,val);
+    if ischar(val)
+        fprintf(fileID, '  %-12s = %s\n', name, val);
+    else
+        fprintf(fileID, '  %-12s = %g\n',name,val);
+    end
 end
 fprintf(fileID, '---------------------------\n\n');
 

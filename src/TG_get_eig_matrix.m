@@ -41,15 +41,15 @@ seed = Params.seed;
 
 
 rng(seed) % put seed = 'shuffle' if random results are desired
-Ne = round(f*Params.N); Ni = N - Ne; % Number of excitatory and inhibitory neurons
+Ne = ceil(f*N); Ni = N - Ne; % Number of excitatory and inhibitory neurons
 
 
 
 %% Create random matrx J = W - I/tau such that 
 % first Ne columns of W are distributed as N(mue, sigmaev^2/N) 
 % and the next of Ni columns of W distributed as N(mui, sigmai^2/N)
-We = mue + (sigmae/sqrt(N))*randn(N, Ne);
-Wi = mui + (sigmai/sqrt(N))*randn(N, Ni);
+We = mue + sigmae*randn(N, Ne);
+Wi = mui + sigmai*randn(N, Ni);
 
 W = [We Wi];
 Tau = -eye(size(W))/tau;

@@ -12,7 +12,7 @@ t_opt = G_stats.t_opt;
 G_max = G_stats.G_max;
 G_init_slope = G_stats.G_init_slope;
 
-t_vec = Params.t_min:Params.t_step:Params.t_max;
+t_vec = linspace(Params.t_min, Params.t_max, Params.t_step);
 
 %% Plot options 
 fig2opt.xlabelstr = '$t$';
@@ -41,7 +41,7 @@ text(t_vec(1)+0.1, G_vec(1), G_init_slope_str, 'Interpreter', 'latex');
 hold off;
 
 % export
-plot_export_fig(-1, [out_dir 'figures/plot_eigvals'], 14, 7/5, 18);
+plot_export_fig(-1, [out_dir 'figures/plot_max_growth'], 14, 7/5, 18);
 
 
 
