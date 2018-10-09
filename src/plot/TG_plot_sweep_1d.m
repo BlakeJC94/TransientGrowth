@@ -1,4 +1,4 @@
-function TG_plot_1d_sweep(sweep_results, var_str, var_vec, out_dir)
+function TG_plot_sweep_1d(sweep_results, var_str, var_vec, out_dir)
 %myFun - Description
 %
 % Syntax: output = myFun(input)

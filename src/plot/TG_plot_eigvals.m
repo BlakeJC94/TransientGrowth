@@ -41,8 +41,8 @@ figopt.ylabelstr = '$\omega_i$';
 figopt.titlestr = ['$N$=' num2str(N) ',~$f$=' num2str(f) ... 
     '$,~\sigma_{e}$=' num2str(sigmae),'$,~\sigma_{i}$=',num2str(sigmai)];
 
-figopt.xmin = -2*sigmaeff - 1/tau + 1;
-figopt.xmax = 1;
+figopt.xmin = -2*sigmaeff - 1/tau + 1 + max(0, max(real(omega)));
+figopt.xmax = 1 + max(0, max(real(omega)));
 figopt.ymin = -1*sigmaeff - 1/(2*tau);
 figopt.ymax =  1*sigmaeff + 1/(2*tau);
 figopt.fitfactor = 1.3;
@@ -54,10 +54,12 @@ figure;
 hold on;
 % plot circle enclosing eigenspectrum in solid black
 plot(-1/tau + sigmaeff*cos(theta), sigmaeff*sin(theta),'-k','linewidth',1)
-% plot dashed grey line from (0, 10) to (0 ,-10) 
-plot([0 0],[-10 10],'--','color',[0.5 0.5 0.5])
+% plot dashed grey line from (0, ymin) to (0, ymax) 
+plot([0, 0],[figopt.ymin figopt.ymax],'--', 'color', [0.5 0.5 0.5])
+% plot dashed grey line from (xmin, 0) to (xmax, 0) 
+plot([figopt.xmin figopt.xmax], [0,0],'--', 'color', [0.5 0.5 0.5])
 % plot eigenvalues of J
-plot(omega,'o','markersize',4); 
+plot(omega,'ro','markersize',4); 
 hold off;
 
 box on;

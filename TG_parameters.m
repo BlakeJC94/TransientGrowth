@@ -8,7 +8,7 @@ function Params = TG_parameters
 %
 % run display(Params) after Params = TG_parameters to print to CLI
 
-Params.N = 100;  % Total number of neurons
+Params.N = 400;  % Total number of neurons
 Params.f = 0.5;  % Proportion of excitatory nodes 
 Params.tau = 1/40;  % Decay rate of system
 

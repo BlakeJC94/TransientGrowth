@@ -63,6 +63,12 @@ J = W + Tau;
 omega = diag(omega);
 
 
+% Rpint warning to CLI if largest eigenvalue is real
+if max(real(omega))>0
+    warning(['Largest eigenvalue has real part ' ...
+        num2str(max(real(omega)))])
+end
+
 end
 
 

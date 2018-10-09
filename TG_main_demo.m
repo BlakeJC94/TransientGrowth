@@ -67,12 +67,7 @@ TG_write_input(Params, out_dir);
 %% Solve system 
 
 % Get eigenvalues of J
-[V, omega, J_mat] = TG_get_eig_matrix(Params);  %#ok<ASGLU>
-
-% print warning to CLI if eigenvalue falls in real plane
-if max(real(omega)) > 0
-    warning('exponential growth expected');
-end
+[V, omega, J_mat] = TG_get_eig_matrix(Params); 
 
 % Get max growth
 [G_vec, G_stats] = TG_get_max_growth(Params, V, omega);
@@ -99,7 +94,7 @@ save([out_dir 'results.mat']);
 %% Solve ODE system
 
 % specify initial condition
-u_init = 0.001*randn(Params.N, 1);
+u_init = 0.0001*randn(Params.N, 1);
 
 t_vec = linspace(Params.t_min, Params.t_max, Params.t_step);
 t_dif = abs(t_vec(2) - t_vec(1));
@@ -121,7 +116,7 @@ for ind = 2:length(t_vec)
 end
 
 figure;
-imagesc(1:Params.N, t_vec, u_mat'); 
+imagesc(1:Params.N, t_vec, abs(u_mat')); 
 set(gca,'YDir','normal');
 xlabel('Spatial index');
 ylabel('Time');

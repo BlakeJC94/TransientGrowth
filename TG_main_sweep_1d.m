@@ -1,9 +1,9 @@
 function TG_main_sweep_1d(total_runs, var_str, var_vec)
 %TG_main - Main function used to run demos and sweeps
 %
-% Syntax: TG_main(total_runs, var_str, var_vec)
+% Syntax: TG_main_sweep_1d(total_runs, var_str, var_vec)
 % 
-% e.g. >> TG_main(5, 'N', [150, 160, 170])  
+% e.g. >> TG_main_sweep_1d(5, 'N', [150, 160, 170])  
 %
 % Input: 
 %   total_runs : number of draws to do
@@ -89,7 +89,7 @@ disp('=== End solving ===')
 save([out_dir 'results.mat']);
 
 % Plot results 
-TG_plot_1d_sweep(sweep_results, var_str, var_vec, out_dir)
+TG_plot_sweep_1d(sweep_results, var_str, var_vec, out_dir)
 
 
 
