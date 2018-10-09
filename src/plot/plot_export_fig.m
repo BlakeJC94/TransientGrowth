@@ -84,7 +84,7 @@ for i=1:length(h)
     try
         set(h(i), 'linewidth' , linewidth); 
     catch
-        disp(['Cannot set linewidth in for plot handle ' num2str(i)]);
+        disp(['Cannot set linewidth for plot handle ' num2str(i)]);
     end
       
 %     % set marker size   

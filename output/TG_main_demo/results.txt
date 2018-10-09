@@ -1,24 +1,24 @@
-10/09/2018 15:31:38
+10/09/2018 16:23:27
 Parameter values loaded: 
 ---------------------------
   N            = 400
-  f            = 0.5
+  f            = 0.8
   tau          = 0.025
-  sigmae       = 5
-  sigmai       = 1
+  sigmae       = 2
+  sigmai       = 0.4
   mue          = 0
   mui          = -0
   frac_EV_TG   = 0.5
   t_min        = 0
-  t_max        = 0.0934259
+  t_max        = 0.179282
   t_step       = 100
   seed         = shuffle
 ---------------------------
 
 Results : 
 ---------------------------
-  G_max        = 5209.9
-  t_opt        = 0.0934259
-  G_init_slope = 130.536
+  G_max        = 2.14571
+  t_opt        = 0.1159
+  G_init_slope = 16.2864
 ---------------------------
 

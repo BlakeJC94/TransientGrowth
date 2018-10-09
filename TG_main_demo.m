@@ -21,13 +21,18 @@ function TG_main_demo(var_str_cell, var_vec)
 addpath(genpath('src'))
 close all;
 
-% check input
+% check nargin
 if nargin == 1
     error('Requested parameter change, but no value given!')
 elseif nargin == 0
     var_str_cell = [];
     var_vec = [];
 end
+% replace str with cell if given
+if ischar(var_str_cell)
+    var_str_cell = {var_str_cell};
+end
+% check length of inputs
 if length(var_str_cell) ~= length(var_vec)
     error('Length of arguments must be equal')
 end
@@ -125,7 +130,7 @@ colormap('jet');
 colorbar;
 
 hold on;
-plot(1:Params.N, (G_stats.t_opt)*ones(1,Params.N), 'k--')
+plot(1:Params.N, (G_stats.t_opt)*ones(1,Params.N), 'm--')
 hold off;
 
 plot_export_fig(0, [out_dir 'figures/plot_spacetime_heat'], 14, 7/5, 18);
