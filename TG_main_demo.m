@@ -69,6 +69,11 @@ TG_write_input(Params, out_dir);
 % Get eigenvalues of J
 [V, omega, J_mat] = TG_get_eig_matrix(Params);  %#ok<ASGLU>
 
+% print warning to CLI if eigenvalue falls in real plane
+if max(real(omega)) > 0
+    warning('exponential growth expected');
+end
+
 % Get max growth
 [G_vec, G_stats] = TG_get_max_growth(Params, V, omega);
 
@@ -90,6 +95,45 @@ TG_plot_max_growth(Params, G_vec, G_stats, out_dir);
 save([out_dir 'results.mat']);
 
 
+
+%% Solve ODE system
+
+% specify initial condition
+u_init = 0.001*randn(Params.N, 1);
+
+t_vec = linspace(Params.t_min, Params.t_max, Params.t_step);
+t_dif = abs(t_vec(2) - t_vec(1));
+
+% preallocate memory (index by (space, time))
+u_mat = zeros(Params.N, length(t_vec));
+
+% use forward euler solve
+u_vec = u_init;
+u_mat(:, 1) = u_vec;
+for ind = 2:length(t_vec)
+
+    % Solve next step
+    u_vec = (eye(Params.N) + t_dif*J_mat) * u_vec;
+    
+    % save result to u_mat
+    u_mat(:, ind) = u_vec;
+    
+end
+
+figure;
+imagesc(1:Params.N, t_vec, u_mat'); 
+set(gca,'YDir','normal');
+xlabel('Spatial index');
+ylabel('Time');
+% text(1, G_stats.t_opt, '$$t_{opt}$$', 'interpreter', 'latex');
+colormap('jet');
+colorbar;
+
+hold on;
+plot(1:Params.N, (G_stats.t_opt)*ones(1,Params.N), 'k--')
+hold off;
+
+plot_export_fig(0, [out_dir 'figures/plot_spacetime_heat'], 14, 7/5, 18);
 
 
 disp('Done!')

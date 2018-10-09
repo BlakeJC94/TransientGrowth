@@ -81,7 +81,12 @@ end
 
 for i=1:length(h)
     % set line width
-    set(h(i), 'linewidth' , linewidth);   
+    try
+        set(h(i), 'linewidth' , linewidth); 
+    catch
+        disp(['Cannot set linewidth in for plot handle ' num2str(i)]);
+    end
+      
 %     % set marker size   
 %     set(h(i), 'MarkerSize' , markersize);    
 end
@@ -89,6 +94,7 @@ end
 
 hold off;
 
+%TODO: add code here that check existence of output directory
 
 % Rescale so dont cut off xLabel
 set(gca,'OuterPosition',[0.01 0.01 0.99 0.99])

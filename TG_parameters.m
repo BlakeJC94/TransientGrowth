@@ -21,8 +21,6 @@ Params.mui = -Params.mue;  % inhibitory mean
 Params.frac_EV_TG = 0.5;  % fraction of eigenvalues used for TG
 
 Params.t_min = 0;
-
-% Params.t_max = 1;
 R = sqrt(Params.N*(Params.f*Params.sigmae^2 + (1-Params.f)*Params.sigmai^2));
 Params.t_max = 3/(abs(1/Params.tau - R));
 Params.t_step = 100;
